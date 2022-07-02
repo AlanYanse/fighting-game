@@ -18,9 +18,10 @@ ctx.fillRect(0, 0, lienzo.width, lienzo.height);
 
 class Sprite {
 
-  constructor(position){
+  constructor({position, velocity}){
 
     this.position = position;
+    this.velocity = velocity;
   }
 
   draw(){
@@ -28,15 +29,83 @@ class Sprite {
     ctx.fillStyle = "red";
     ctx.fillRect(this.position.x, this.position.y, 50, 150);
   }
+
+  update(){
+
+    this.draw();
+    this.position.y += this.velocity.y;
+  }
 }
 
 
 // Instancias de Sprite
 
-const player = new Sprite({x: 0, y: 0})
+const player = new Sprite({
 
-player.draw();
+  position : { x : 0 , y : 0 },
+
+  velocity : { x : 0 , y : 5 }
+
+});
+
+
+const enemy = new Sprite({
+
+  position : { x : 400 , y : 100 },
+  
+  velocity : {x : 0 , y : 0 }
+
+});
+
+
 
 console.log(player);
 
 
+// Loop principal
+
+function animate(){
+
+  window.requestAnimationFrame(animate);
+  console.log("go");
+  ctx.fillStyle = "black";
+  ctx.fillRect(0 , 0 , lienzo.width , lienzo.height);
+  player.update();
+  enemy.update();
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+animate()
