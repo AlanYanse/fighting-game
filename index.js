@@ -15,6 +15,8 @@ ctx.fillRect(0, 0, lienzo.width, lienzo.height);
 
 // Creando personajes y enemigos
 
+const gravity = 0.2;
+
 
 class Sprite {
 
@@ -22,18 +24,25 @@ class Sprite {
 
     this.position = position;
     this.velocity = velocity;
+    this.height = 150;
   }
 
   draw(){
     
     ctx.fillStyle = "red";
-    ctx.fillRect(this.position.x, this.position.y, 50, 150);
+    ctx.fillRect(this.position.x, this.position.y, 50, this.height);
   }
 
   update(){
 
     this.draw();
     this.position.y += this.velocity.y;
+
+    if(this.position.y + this.height + this.velocity.y >= lienzo.height){
+      this.velocity.y = 0;
+    }else{
+      this.velocity.y += gravity;
+    }
   }
 }
 
@@ -44,7 +53,7 @@ const player = new Sprite({
 
   position : { x : 0 , y : 0 },
 
-  velocity : { x : 0 , y : 5 }
+  velocity : { x : 0 , y : 0 }
 
 });
 
@@ -67,7 +76,7 @@ console.log(player);
 function animate(){
 
   window.requestAnimationFrame(animate);
-  console.log("go");
+  //console.log("go");
   ctx.fillStyle = "black";
   ctx.fillRect(0 , 0 , lienzo.width , lienzo.height);
   player.update();
