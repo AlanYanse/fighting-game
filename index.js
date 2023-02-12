@@ -15,7 +15,7 @@ ctx.fillRect(0, 0, lienzo.width, lienzo.height);
 
 // Creando personajes y enemigos
 
-const gravity = 0.2;
+const gravity = 0.5;
 
 
 class Sprite {
@@ -25,6 +25,7 @@ class Sprite {
     this.position = position;
     this.velocity = velocity;
     this.height = 150;
+    this.lastKey;
   }
 
   draw(){
@@ -75,11 +76,13 @@ console.log(player);
 const keys = {
 	
   a: { pressed: false },
-  d: { pressed: false } 
+  d: { pressed: false }, 
+ // w: { pressed: false } 
+  ArrowRight: { pressed: false }, 
+  ArrowLeft: { pressed: false }, 
 }
 
 
-let lastKey; 
 
 
 
@@ -95,13 +98,25 @@ function animate(){
   enemy.update();
 
   player.velocity.x = 0;
-
-  if(keys.a.pressed && lastKey === "a"){
+  enemy.velocity.x = 0;
+  
+  // player movements
+  if(keys.a.pressed && player.lastKey === "a"){
     
-    player.velocity.x = -1;
-  }else if(keys.d.pressed && lastKey === "d"){
+    player.velocity.x = -5;
+  }else if(keys.d.pressed && player.lastKey === "d"){
 
-    player.velocity.x = 1;
+    player.velocity.x = 5;
+  }
+  
+
+  // enemy movements
+  if(keys.ArrowLeft.pressed && enemy.lastKey === "ArrowLeft"){
+    
+    enemy.velocity.x = -5;
+  }else if(keys.ArrowRight.pressed && enemy.lastKey === "ArrowRight"){
+
+    enemy.velocity.x = 5;
   }
 
 
@@ -120,14 +135,35 @@ window.addEventListener("keydown", (event)=>{
   switch (event.key){
 
     case "d":
-      lastKey = "d";
+      player.lastKey = "d";
       keys.d.pressed = true;
     break
 
     case "a":
-      lastKey = "a";
+      player.lastKey = "a";
       keys.a.pressed = true;
     break
+      
+    case "w":
+      player.velocity.y = -15;
+      //keys.w.pressed = true;
+    break
+    
+    case "ArrowRight":
+      enemy.lastKey = "ArrowRight";
+      keys.ArrowRight.pressed = true;
+    break
+
+    case "ArrowLeft":
+      enemy.lastKey = "ArrowLeft";
+      keys.ArrowLeft.pressed = true;
+    break
+      
+    case "ArrowUp":
+      enemy.velocity.y = -15;
+      //keys.ArrowUp.pressed = true;
+    break
+
 
   }
    console.log(event.key);
@@ -144,12 +180,30 @@ window.addEventListener("keyup", (event)=>{
 
       keys.d.pressed = false;
     break
-     case "a":
+    case "a":
 
       keys.a.pressed = false;
     break
 
   }
+
+  // enemy keys
+
+  switch (event.key){
+
+    case "ArrowRight":
+
+      keys.ArrowRight.pressed = false;
+    break
+    case "ArrowLeft":
+
+      keys.ArrowLeft.pressed = false;
+    break
+
+  }
+
+
+
    console.log(event.key);
   
 });
